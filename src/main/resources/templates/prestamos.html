@@ -1,0 +1,357 @@
+PRESTAMOS
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Préstamos - Biblioteca</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- CSS propio con Thymeleaf -->
+  <link rel="stylesheet" th:href="@{/css/nav.css}">
+  <style>
+    html, body {
+      min-width: 384px;
+      overflow-x: auto;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #000;
+    }
+
+    /* Fondo general */
+    .contenedor-general .fondo {
+      background: url('/img/fondo.jpg') center/cover no-repeat;
+      opacity: 0.25;
+      position: fixed;
+      top: 3%;
+      left: 2%;
+      right: 1%;
+      bottom: 0;
+      border-radius: 20px;
+      z-index: 0;
+    }
+
+    /* Navbar */
+    .navbar-container {
+      position: relative;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      width: 90%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .navbar {
+      background: rgba(57, 57, 57, 0.372);
+      backdrop-filter: blur(15px);
+      border-radius: 12px;
+      padding: 10px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      font-size: 12.5px;
+    }
+
+    .navbar img { height: 40px; border-radius:30px; }
+
+    .navbar a, .login-btn {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .navbar a:hover { color: #09bad5; transform: scale(1.1); }
+
+    .login-btn {
+      background-color: #ffffff;
+      color: #09bad5;
+      padding: 10px 15px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .login-btn:hover {
+      background-color: #09bad5;
+      color: #ffffff;
+      transform: scale(1.01);
+    }
+
+    /* Iconos flotantes */
+    .iconos-flotantes {
+      position: fixed;
+      top: 38px;
+      right: 100px;
+      display: flex;
+      gap: 15px;
+      z-index: 20;
+    }
+
+    .iconos-flotantes div {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .iconos-flotantes i {
+      font-size: 1.1rem;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    /* Header */
+    .catalogo-header {
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    .catalogo-header h1 {
+      font-weight: 700;
+      color: #09bad5;
+    }
+
+    .catalogo-header p {
+      color: white;
+      font-weight: 700;
+    }
+
+    /* Contenedor de préstamos */
+    .libros-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 40px;
+      padding: 40px;
+      justify-items: center;
+      z-index: 2;
+    }
+
+    /* Tarjeta de préstamo */
+    .libro-card {
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+      max-width: 280px;
+      color: white;
+      position: relative;
+    }
+
+    .libro-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 0px 20px rgba(9,186,213,0.4);
+    }
+
+    .libro-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+
+    /* Información del préstamo */
+    .libro-info {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .libro-info h5 {
+      font-size: 17px;
+      color: #09bad5;
+      margin-bottom: 6px;
+    }
+
+    .libro-info p {
+      font-size: 13px;
+      color: #ccc;
+      margin-bottom: 5px;
+    }
+
+    .badge-estado {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .estado-vigente { background-color: rgba(9,186,213,0.3); color: #09bad5; }
+    .estado-vencido { background-color: rgba(255,0,0,0.3); color: #ff6b6b; }
+    .estado-devuelto { background-color: rgba(0,255,0,0.2); color: #00d084; }
+
+    .btn-ver {
+      background-color: #09bad5;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      transition: 0.3s;
+      margin-top: 8px;
+    }
+    .btn-ver:hover {
+      background-color: #fff;
+      color: #09bad5;
+    }
+  </style>
+</head>
+
+<body>
+<div class="contenedor-general">
+
+  <!-- Navbar -->
+  <div class="navbar-container">
+    <nav class="navbar">
+      <img th:src="@{/img/logolibro.png}" alt="Logo">
+      <a th:href="@{/}">Inicio</a>
+      <a th:href="@{/catalogo}">Catálogo</a>
+      <a th:href="@{/prestamos}">Préstamos</a>
+      <a th:href="@{/contactos}">Contacto</a>
+      <a th:href="@{/iniciologin}" class="login-btn">
+        Iniciar Sesión <i class="bi bi-person-fill"></i>
+      </a>
+    </nav>
+  </div>
+
+
+
+  <br><br>
+  <!-- Encabezado -->
+  <div class="catalogo-header">
+    <h1>Gestión de Préstamos</h1>
+    <p>Controla y visualiza el estado de los préstamos de libros</p>
+  </div>
+
+  <!-- Contenedor dinámico de préstamos -->
+  <div class="libros-container">
+
+    <!-- Ejemplo de tarjeta (estática o render dinámica con Thymeleaf) -->
+    <div class="libro-card" th:each="prestamo : ${prestamos}">
+      <img th:src="@{/img/libro7.jpg}" alt="Libro 1">
+      <div class="libro-info">
+        <h5 th:text="${prestamo.libro.titulo}">Orgullo y prejuicio</h5>
+        <p><i class="bi bi-person-fill"></i> <span th:text="${prestamo.usuario.nombre}">Luis Fernández</span></p>
+        <p><i class="bi bi-calendar-check"></i> <strong>Préstamo:</strong> <span th:text="${prestamo.fechaPrestamo}">2025-09-15</span></p>
+        <p><i class="bi bi-calendar-x"></i> <strong>Devolución:</strong> <span th:text="${prestamo.fechaDevolucion}">2025-09-29</span></p>
+
+        <!-- Estado visual -->
+        <span class="badge-estado" th:classappend="' estado-' + ${prestamo.estado.toLowerCase()}"
+              th:text="${prestamo.estado}">Vigente</span>
+
+        <div>
+          <button class="btn-ver"><i class="bi bi-eye"></i> Ver detalles</button>
+        </div>
+      </div>
+    </div>
+    <div class="libro-card" th:each="prestamo : ${prestamos}">
+      <img th:src="@{/img/libro5.jpg}" alt="Libro 1">
+      <div class="libro-info">
+        <h5 th:text="${prestamo.libro.titulo}">Don quijote de la Mancha</h5>
+        <p><i class="bi bi-person-fill"></i> <span th:text="${prestamo.usuario.nombre}">Hector Benavides</span></p>
+        <p><i class="bi bi-calendar-check"></i> <strong>Préstamo:</strong> <span th:text="${prestamo.fechaPrestamo}">2025-09-01</span></p>
+        <p><i class="bi bi-calendar-x"></i> <strong>Devolución:</strong> <span th:text="${prestamo.fechaDevolucion}">2025-09-14</span></p>
+
+        <!-- Estado visual -->
+        <span class="badge-estado" th:classappend="' estado-' + ${prestamo.estado.toLowerCase()}"
+              th:text="${prestamo.estado}">Vigente</span>
+
+        <div>
+          <button class="btn-ver"><i class="bi bi-eye"></i> Ver detalles</button>
+        </div>
+      </div>
+    </div>
+    <div class="libro-card" th:each="prestamo : ${prestamos}">
+      <img th:src="@{/img/libro3.jpg}" alt="Libro 1">
+      <div class="libro-info">
+        <h5 th:text="${prestamo.libro.titulo}">La Llamada Salvaje</h5>
+        <p><i class="bi bi-person-fill"></i> <span th:text="${prestamo.usuario.nombre}">Azucena Portocarrero</span></p>
+        <p><i class="bi bi-calendar-check"></i> <strong>Préstamo:</strong> <span th:text="${prestamo.fechaPrestamo}">2025-09-15</span></p>
+        <p><i class="bi bi-calendar-x"></i> <strong>Devolución:</strong> <span th:text="${prestamo.fechaDevolucion}">2025-09-29</span></p>
+
+        <!-- Estado visual -->
+        <span class="badge-estado" th:classappend="' estado-' + ${prestamo.estado.toLowerCase()}"
+              th:text="${prestamo.estado}">Vigente</span>
+
+        <div>
+          <button class="btn-ver"><i class="bi bi-eye"></i> Ver detalles</button>
+        </div>
+      </div>
+    </div>
+    <div class="libro-card" th:each="prestamo : ${prestamos}">
+      <img th:src="@{/img/libro7.jpg}" alt="Libro 1">
+      <div class="libro-info">
+        <h5 th:text="${prestamo.libro.titulo}">Harry Potter</h5>
+        <p><i class="bi bi-person-fill"></i> <span th:text="${prestamo.usuario.nombre}">Kendry Tavarez</span></p>
+        <p><i class="bi bi-calendar-check"></i> <strong>Préstamo:</strong> <span th:text="${prestamo.fechaPrestamo}">2025-09-15</span></p>
+        <p><i class="bi bi-calendar-x"></i> <strong>Devolución:</strong> <span th:text="${prestamo.fechaDevolucion}">2025-09-29</span></p>
+
+        <!-- Estado visual -->
+        <span class="badge-estado" th:classappend="' estado-' + ${prestamo.estado.toLowerCase()}"
+              th:text="${prestamo.estado}">Vigente</span>
+
+        <div>
+          <button class="btn-ver"><i class="bi bi-eye"></i> Ver detalles</button>
+        </div>
+      </div>
+    </div>
+    <div class="libro-card" th:each="prestamo : ${prestamos}">
+      <img th:src="@{/img/libro7.jpg}" alt="Libro 1">
+      <div class="libro-info">
+        <h5 th:text="${prestamo.libro.titulo}">La Delicadeza</h5>
+        <p><i class="bi bi-person-fill"></i> <span th:text="${prestamo.usuario.nombre}">Gabriel Mamani</span></p>
+        <p><i class="bi bi-calendar-check"></i> <strong>Préstamo:</strong> <span th:text="${prestamo.fechaPrestamo}">2025-09-15</span></p>
+        <p><i class="bi bi-calendar-x"></i> <strong>Devolución:</strong> <span th:text="${prestamo.fechaDevolucion}">2025-09-29</span></p>
+
+        <!-- Estado visual -->
+        <span class="badge-estado" th:classappend="' estado-' + ${prestamo.estado.toLowerCase()}"
+              th:text="${prestamo.estado}">Vigente</span>
+
+        <div>
+          <button class="btn-ver"><i class="bi bi-eye"></i> Ver detalles</button>
+        </div>
+      </div>
+    </div>
+    <div class="libro-card" th:each="prestamo : ${prestamos}">
+      <img th:src="@{/img/libro7.jpg}" alt="Libro 1">
+      <div class="libro-info">
+        <h5 th:text="${prestamo.libro.titulo}">George orwell</h5>
+        <p><i class="bi bi-person-fill"></i> <span th:text="${prestamo.usuario.nombre}">Carla Diaz</span></p>
+        <p><i class="bi bi-calendar-check"></i> <strong>Préstamo:</strong> <span th:text="${prestamo.fechaPrestamo}">2025-09-15</span></p>
+        <p><i class="bi bi-calendar-x"></i> <strong>Devolución:</strong> <span th:text="${prestamo.fechaDevolucion}">2025-09-29</span></p>
+
+        <!-- Estado visual -->
+        <span class="badge-estado" th:classappend="' estado-' + ${prestamo.estado.toLowerCase()}"
+              th:text="${prestamo.estado}">Vigente</span>
+
+        <div>
+          <button class="btn-ver"><i class="bi bi-eye"></i> Ver detalles</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="fondo"></div>
+</div>
+
+</body>
+
+</html>

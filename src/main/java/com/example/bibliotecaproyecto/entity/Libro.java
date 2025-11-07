@@ -1,0 +1,25 @@
+package com.example.bibliotecaproyecto.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "libro")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Libro {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idLibro;
+
+    @Column(nullable = false, length = 200)
+    private String titulo;
+
+    @Column(nullable = false, length = 150)
+    private String autor;
+
+    @Column(name = "cantidad_disponible", nullable = false)
+    private Integer cantidadDisponible = 0;
+}

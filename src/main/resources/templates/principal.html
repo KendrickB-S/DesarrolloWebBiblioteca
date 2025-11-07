@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- CSS propio con Thymeleaf -->
+    <link rel="stylesheet" th:href="@{/css/nav.css}">
+
+    <title>Document</title>
+    <style>
+
+
+    /* ============================= */
+    /* PRIMERA SECCIÓN GENERAL */
+    /* ============================= */
+
+    .libros-section {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+      overflow: hidden;
+      min-height: 500px;
+      margin-top: 10px;
+    }
+
+    .libros-section .fondo {
+      background: url('/img/fondillo1.png') center/cover no-repeat;
+      opacity: 0.25;
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      right: 5%;
+      bottom: 0;
+      border-radius: 20px;
+      z-index: 0;
+    }
+
+    .libros-section h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      padding-top: 60px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .libros-section h1 .blanco {
+      color: #ffffff;
+    }
+
+    .libros-section h1 .celeste {
+      color: #09bad5;
+    }
+
+    .libros-section .botones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+    }
+
+    .libros-section .botones button {
+      border: none;
+      padding: 12px 20px;
+      border-radius: 9px;
+      margin-bottom: 40px;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.5s all;
+    }
+
+    .libros-section .botones button.blanco {
+      background-color: #ffffff;
+      color: #09bad5;
+    }
+
+    .libros-section .botones button.celeste {
+      background-color: #09bad5;
+      color: #ffffff;
+    }
+
+    .libros-section .botones button.blanco:hover {
+      background-color: #09bad5;
+      color: #ffffff;
+      transform: scale(1.1);
+    }
+
+    .libros-section .botones button.celeste:hover {
+      background-color: #ffffff;
+      color: #09bad5;
+      transform: scale(1.05);
+    }
+
+    .libros-section .contenido {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+    }
+
+    .libros-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .libros-grid img {
+      width: 200px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      transition: transform 0.3s;
+    }
+
+    .libros-grid img:hover {
+      transform: scale(1.03);
+    }
+
+    /* ANIMACIONES DE ENTRADA */
+    @keyframes slideFromLeft {
+      0% { opacity: 0; transform: translateX(-50px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideFromRight {
+      0% { opacity: 0; transform: translateX(50px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideFromBottom {
+      0% { opacity: 0; transform: translateY(50px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Inicializamos los elementos */
+    .libros-section h1 .blanco,
+    .libros-section h1 .celeste,
+    .libros-grid img {
+      opacity: 0;
+      display: inline-block; /* para que translateX/translateY funcione */
+    }
+
+    /* Animaciones aplicadas */
+    .libros-section h1 .blanco {
+      animation: slideFromLeft 1s ease-out forwards;
+    }
+
+    .libros-section h1 .celeste {
+      animation: slideFromRight 1s ease-out forwards;
+      animation-delay: 0.2s;
+    }
+
+    .libros-section .botones button {
+      opacity: 0;              /* para animar desde invisible */
+      transform: translateY(50px); /* posición inicial fuera de vista */
+      animation: slideFromBottom 0.8s ease-out forwards;
+    }
+
+    /* Escalonado: cada botón aparece un poco después */
+    .libros-section .botones button:nth-child(1) { animation-delay: 0.4s; }
+    .libros-section .botones button:nth-child(2) { animation-delay: 0.6s; }
+
+    .libros-grid img {
+      animation: slideFromRight 1s ease-out forwards;
+    }
+
+    /* Efecto escalonado para imágenes */
+    .libros-grid img:nth-child(1) { animation-delay: 0.5s; }
+    .libros-grid img:nth-child(2) { animation-delay: 0.7s; }
+    .libros-grid img:nth-child(3) { animation-delay: 0.9s; }
+    .libros-grid img:nth-child(4) { animation-delay: 1.1s; }
+
+
+
+
+
+    /* ============================= */
+    /* MEDIA QUERIES RESPONSIVE */
+    /* ============================= */
+
+
+    /* Tablets grandes o pantallas medianas (769px - 1200px) */
+    @media (min-width: 669px) and (max-width: 1200px) {
+      .libros-section {
+        margin-top: 20px;
+        padding: 50px 15px;
+        min-height: 450px;
+      }
+
+      .libros-section h1 {
+        margin-top: 50px;
+        font-size: 2rem;
+      }
+
+      .libros-grid img {
+        width: 180px;
+        height: 270px;
+      }
+
+      .libros-section .botones button {
+        padding: 10px 18px;
+        font-size: 14px;
+      }
+    }
+
+    /* 📱 Tablets pequeñas y móviles horizontales (481px - 768px) */
+    @media (min-width: 481px) and (max-width: 688px) {
+      .libros-section {
+        margin-top: 35px;
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 10px;
+
+      }
+
+      .libros-section .fondo {
+        bottom: 2%;
+
+
+      }
+
+      .libros-section h1 {
+        font-size: 1.7rem;
+        margin-top: 50px;
+        margin-bottom: 25px;
+      }
+
+      .libros-section .botones {
+        gap: 15px;
+      }
+
+      .libros-section .botones button {
+        padding: 10px 20px;
+        font-size: 12px;
+        margin-bottom: 25px;
+      }
+
+      .libros-grid img {
+        margin-top: 10px;
+        width: 120px;
+        height: 180px;
+      }
+    }
+
+    /*  Móviles pequeños (hasta 480px) */
+    @media (max-width: 480px) {
+      .libros-section {
+        margin-top: 45px;
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 10px;
+      }
+
+      .libros-section h1 {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+      }
+
+      .libros-section .botones {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .libros-section .botones button {
+        padding: 8px 15px;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: -10px;
+        width: auto;          /*  Asegura que no ocupen el 100% */
+      }
+
+      .libros-grid img {
+        margin-top: 65px;
+        width: 95px;
+        height: 170px;
+      }
+    }
+
+
+
+
+    /*SEGUNDA SECCION*/
+
+    /* Keyframes para animaciones de entrada */
+    @keyframes slideFromLeft {
+      0% { opacity: 0; transform: translateX(-50px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideFromRight {
+      0% { opacity: 0; transform: translateX(50px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Segunda sección */
+    section.container {
+       font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* ----------- Imagen ----------- */
+    .seccion2-img img {
+      max-width: 75%;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(9, 186, 213, 0.3);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+
+    .seccion2-img img.animate {
+      animation: slideFromLeft 2s ease-out forwards;
+    }
+
+    .seccion2-img img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 35px rgba(9, 186, 213, 0.5);
+    }
+
+    /* ----------- Texto ----------- */
+    .seccion2-texto h2 {
+      padding-top: 10px;
+      font-size: 35px;
+      position: relative;
+      top: -40px;
+      opacity: 0;
+      transform: translateX(50px);
+    }
+
+    .seccion2-texto h2.animate {
+      animation: slideFromRight 2s ease-out forwards;
+    }
+
+    .seccion2-texto h2 span.text-info {
+      color: #09bad5 !important;
+    }
+
+    .seccion2-texto .lead {
+      color: #dcdcdc;
+      font-size: 14px;
+      opacity: 0.95;
+      line-height: 1.7;
+      transition: color 0.3s ease;
+      text-align: justify;
+      opacity: 0;
+      transform: translateX(50px);
+    }
+
+    .seccion2-texto .lead.animate {
+      animation: slideFromRight 1s ease-out forwards;
+    }
+
+    .seccion2-texto .lead:hover {
+      color: #ffffff;
+    }
+
+    /* ----------- Botón ----------- */
+    .seccion2-texto button.btn-info {
+      background-color: #09bad5;
+      font-size: 13.5px;
+      border: none;
+      transition: 0.3s;
+      font-style: normal;
+      font-weight: normal;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 13px 24px !important;
+      border-radius: 8px;
+      opacity: 0;
+      transform: translateX(50px);
+    }
+
+    .seccion2-texto button.btn-info.animate {
+      animation: slideFromRight 1s ease-out forwards;
+    }
+
+    .seccion2-texto button.btn-info:hover {
+      background-color: #ffffff;
+      color: #09bad5 !important;
+      transform: scale(1.02);
+    }
+
+    .seccion2-texto button.btn-info i {
+      transition: transform 0.3s ease;
+    }
+
+    .seccion2-texto button.btn-info:hover i {
+      transform: translateX(5px);
+    }
+
+    /* ----------- RESPONSIVE ----------- */
+    @media (max-width: 768px) {
+      .seccion2-texto {
+        text-align: center !important;
+      }
+
+      .seccion2-texto h2 {
+        font-size: 22px !important;
+      }
+
+      .seccion2-texto .lead {
+        margin-top: -40px;
+        text-align: center !important;
+        font-size: 12px;
+      }
+
+      .seccion2-texto button.btn-info {
+        display: inline-flex !important;
+        justify-content: center !important;
+        margin: 20px auto 0 auto !important;
+        padding: 10px 20px !important;
+        font-size: 12px;
+      }
+
+      .seccion2-img img {
+        max-width: 65%;
+      }
+    }
+
+
+
+
+
+
+
+
+    /*SECCION 3*/
+
+    /* Subtítulo inicialmente invisible */
+    .container h3 {
+      color: #ffffff;
+      font-size: 17px;
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    /* Clase que activa la animación */
+    .container h3.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Carrusel y track sigue igual */
+    .carousel-container {
+      width: 100%;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 1.5rem;
+      scroll-behavior: smooth;
+      overflow-x: auto;
+      padding: 10px 1rem 10px 1rem;
+      scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Tarjetas transparentes */
+    .book-card {
+      min-width: 8rem;
+      transition: box-shadow 0.3s;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+    }
+
+    /* Imagen con sombra en todo el contorno al hover */
+    .book-card img {
+      height: 12rem;
+      object-fit: cover;
+      transition: box-shadow 0.3s;
+    }
+
+    .book-card:hover img {
+      box-shadow: 0 0 20px 5px rgba(12, 169, 200, 0.9); /* sombra alrededor de todo el contorno */
+    }
+
+    /* Texto de descripción en blanco */
+    .book-card .card-text {
+      color: #ffffff;
+    }
+
+    /* Botones del carrusel */
+    .carousel-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      z-index: 10;
+      border-radius: 50%;
+      background: #04a8c1; /* color de fondo */
+      color: #ffffff; /* color del icono */
+      border: none; /* quitar borde */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    /* Efecto hover */
+    .carousel-btn:hover {
+      background: #0293a6; /* color más oscuro al pasar el mouse */
+    }
+
+
+
+
+
+
+
+
+    /* SECCION 6 */
+    .subtitulo6 {
+      color: #ffffff;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    /* Cuadro transparente */
+    .enlaces-cuadro {
+      background-color: rgba(255, 255, 255, 0.05); /* transparente con un toque */
+      border-radius: 12px;
+    }
+
+    /* Estilo de cada enlace */
+    .enlace-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255,255,255,0.1);
+      padding: 10px 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 13px;
+    }
+
+    /* Flecha dentro del enlace */
+    .enlace-item .flecha {
+      transition: transform 0.3s ease;
+    }
+
+    /* Hover del enlace */
+    .enlace-item:hover {
+      background-color: rgba(4,168,193,0.8);
+    }
+
+    .enlace-item:hover .flecha {
+      transform: translateX(5px); /* mueve la flecha a la derecha */
+    }
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="navbar-container">
+    <nav class="navbar">
+        <img th:src="@{/img/logolibro.png}" alt="Logo">
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/catalogo}">Catálogo</a>
+        <a th:href="@{/prestamos}">Préstamos</a>
+        <a th:href="@{/contactos}">Contacto</a>
+        <a th:href="@{/iniciologin}" class="login-btn">
+            Iniciar Sesión <i class="bi bi-person-fill"></i>
+        </a>
+    </nav>
+</div>
+
+<!-- Iconos flotantes -->
+<div class="iconos-flotantes">
+    <div class="search-icon-container"><i class="bi bi-search"></i></div>
+    <div class="prestamos-icon-container"><i class="bi bi-book-half"></i></div>
+</div>
+
+<!-- Sección Libros -->
+<section class="libros-section">
+    <div class="fondo"></div>
+    <div class="contenido">
+        <h1><span class="blanco">Explora</span> <span class="celeste">Nuestra Biblioteca</span></h1>
+        <div class="botones">
+            <button class="blanco">Ver Catálogo</button>
+            <button class="celeste">Novedades</button>
+        </div>
+
+        <div class="libros-grid">
+            <img th:src="@{/img/libro7.jpg}" alt="Libro 1">
+            <img th:src="@{/img/libro3.jpg}" alt="Libro 2">
+            <img th:src="@{/img/libro5.jpg}" alt="Libro 3">
+        </div>
+    </div>
+</section>
+
+<!-- Segunda sección -->
+<section class="container my-5 text-center text-white">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0 seccion2-img">
+            <img th:src="@{/img/libroseccion2.png}" class="img-fluid rounded-4 shadow" alt="Lectura" />
+        </div>
+        <div class="col-lg-6 text-start seccion2-texto">
+            <h2 class="fw-bold mb-3">
+                Fomentamos la <span class="text-info">lectura digital</span>
+            </h2>
+            <p class="lead">
+                Nuestra plataforma ofrece acceso a una amplia colección de libros digitales,
+                permitiendo a estudiantes y docentes explorar, aprender y compartir conocimiento
+                desde cualquier dispositivo.
+            </p>
+            <button class="btn btn-info text-white px-4 py-2 mt-3 fw-semibold">
+                Explorar más <i class="bi bi-arrow-right-circle"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Secciones 3, 4 y 5 (carruseles) -->
+<section class="container my-5">
+    <div class="d-flex align-items-center mb-3">
+        <h3 class="me-auto">Recomendados</h3>
+    </div>
+    <div class="carousel-container position-relative">
+        <div class="carousel-track d-flex overflow-hidden" id="carouselTrack"></div>
+        <button class="carousel-btn prev btn btn-outline-secondary position-absolute top-50 start-0 translate-middle-y">&#10094;</button>
+        <button class="carousel-btn next btn btn-outline-secondary position-absolute top-50 end-0 translate-middle-y">&#10095;</button>
+    </div>
+</section>
+
+<section id="seccion4" class="container my-5">
+    <div class="d-flex align-items-center mb-3">
+        <h3 class="me-auto" id="subtitulo4">Agregados recientemente</h3>
+    </div>
+    <div class="carousel-container position-relative">
+        <div class="carousel-track d-flex overflow-hidden" id="carouselTrack4"></div>
+        <button class="carousel-btn prev position-absolute top-50 start-0 translate-middle-y">&#10094;</button>
+        <button class="carousel-btn next position-absolute top-50 end-0 translate-middle-y">&#10095;</button>
+    </div>
+</section>
+
+<section id="seccion5" class="container my-5">
+    <div class="d-flex align-items-center mb-3">
+        <h3 class="me-auto" id="subtitulo5">Autores reconocidos</h3>
+    </div>
+    <div class="carousel-container position-relative">
+        <div class="carousel-track d-flex overflow-hidden" id="carouselTrack5"></div>
+        <button class="carousel-btn prev position-absolute top-50 start-0 translate-middle-y">&#10094;</button>
+        <button class="carousel-btn next position-absolute top-50 end-0 translate-middle-y">&#10095;</button>
+    </div>
+</section>
+
+<!-- Sección 6 -->
+<section id="seccion6" class="container my-5">
+    <div class="text-center mb-4">
+        <h3 class="subtitulo6">Explora nuestras categorías</h3>
+    </div>
+    <div class="enlaces-cuadro p-4 rounded">
+        <div class="row g-3">
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Lo Mejor<span class="flecha">&#8594;</span></a></div>
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Cuentos Top<span class="flecha">&#8594;</span></a></div>
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Novelas Top<span class="flecha">&#8594;</span></a></div>
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Novedades <span class="flecha">&#8594;</span></a></div>
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Existos Históricos <span class="flecha">&#8594;</span></a></div>
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Más Destacados <span class="flecha">&#8594;</span></a></div>
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Materias <span class="flecha">&#8594;</span></a></div>
+            <div class="col-6 col-md-3"><a href="#" class="enlace-item">Ultimas Tendencias <span class="flecha">&#8594;</span></a></div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container-fluid px-5">
+        <div class="row">
+            <div class="col-md-3 mb-4 text-center text-md-start">
+                <h4 class="footer-logo mb-2"><span class="text-white">Book</span><span style="color: #0bb9d0;">Store</span></h4>
+                <img th:src="@{/img/logolibro.png}" alt="Logo Book Store" class="footer-logo-img" width="80">
+            </div>
+            <div class="col-md-3 mb-4 text-center text-md-start">
+                <h5>Enlaces</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="footer-link">Inicio</a></li>
+                    <li><a href="#" class="footer-link">Libros</a></li>
+                    <li><a href="#" class="footer-link">Ofertas</a></li>
+                    <li><a href="#" class="footer-link">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4 text-center text-md-start">
+                <h5>Categorías</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="footer-link">Lo Mejor</a></li>
+                    <li><a href="#" class="footer-link">Cuentos Top</a></li>
+                    <li><a href="#" class="footer-link">Novelas Pop</a></li>
+                    <li><a href="#" class="footer-link">Novedades Nuevas</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4 text-center">
+                <h5>Síguenos</h5>
+                <div class="d-flex justify-content-center gap-3 mt-2">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="bg-secondary">
+        <div class="row">
+            <div class="col text-center">
+                <p class="mb-0 copyright">&copy; 2025 Book Store. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script th:inline="javascript">
+    /*SEGUNDA SECCION*/
+    const seccion = document.querySelector('section.container');
+    const imagen = seccion.querySelector('.seccion2-img img');
+    const h2 = seccion.querySelector('.seccion2-texto h2');
+    const lead = seccion.querySelector('.seccion2-texto .lead');
+    const boton = seccion.querySelector('.seccion2-texto button.btn-info');
+
+    window.addEventListener('scroll', () => {
+      const top = seccion.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+
+      if (top < windowHeight * 0.85) {
+        imagen.classList.add('animate');
+        h2.classList.add('animate');
+        lead.classList.add('animate');
+        boton.classList.add('animate');
+      }
+    });
+
+    /*SECCION3*/
+    const libros = [
+      { img: /*[[@{/img/libro3.jpg}]]*/, titulo: 'Libro 1' },
+      { img: /*[[@{/img/libro5.jpg}]]*/, titulo: 'Libro 2' },
+      { img: /*[[@{/img/libro3.jpg}]]*/, titulo: 'Libro 3' },
+      { img: /*[[@{/img/libro4.jpg}]]*/, titulo: 'Libro 4' },
+      { img: /*[[@{/img/libro5.jpg}]]*/, titulo: 'Libro 5' },
+      { img: /*[[@{/img/libro6.jpg}]]*/, titulo: 'Libro 6' },
+      { img: /*[[@{/img/libro7.jpg}]]*/, titulo: 'Libro 7' },
+      { img: /*[[@{/img/libro4.jpg}]]*/, titulo: 'Libro 8' },
+      { img: /*[[@{/img/libro4.jpg}]]*/, titulo: 'Libro 9' },
+      { img: /*[[@{/img/libro5.jpg}]]*/, titulo: 'Libro 10' },
+      { img: /*[[@{/img/libro6.jpg}]]*/, titulo: 'Libro 11' },
+      { img: /*[[@{/img/libro7.jpg}]]*/, titulo: 'Libro 12' },
+      { img: /*[[@{/img/libro4.jpg}]]*/, titulo: 'Libro 13' }
+    ];
+
+    const track = document.getElementById('carouselTrack');
+
+    libros.forEach(libro => {
+      const card = document.createElement('div');
+      card.classList.add('card', 'book-card');
+      card.innerHTML = `
+        <img src="${libro.img}" class="card-img-top" alt="${libro.titulo}">
+        <div class="card-body p-2">
+          <p class="card-text text-center" style="font-size: 0.7rem;">${libro.titulo}</p>
+        </div>
+      `;
+      track.appendChild(card);
+    });
+
+    const prevBtn = document.querySelector('.carousel-btn.prev');
+    const nextBtn = document.querySelector('.carousel-btn.next');
+    const cardWidth = track.querySelector('.book-card').offsetWidth + 8;
+
+    prevBtn.addEventListener('click', () => track.scrollBy({ left: -cardWidth, behavior: 'smooth' }));
+    nextBtn.addEventListener('click', () => track.scrollBy({ left: cardWidth, behavior: 'smooth' }));
+
+    const subtitulo = document.querySelector('.container h3');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          subtitulo.classList.add('visible');
+          observer.unobserve(subtitulo);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(subtitulo);
+
+    /*SECCION 4 y 5 siguen la misma lógica que SECCION3*/
+
+    const secciones = [
+      { trackId: 'carouselTrack4', prevSelector: '#seccion4 .carousel-btn.prev', nextSelector: '#seccion4 .carousel-btn.next', subtituloId: 'subtitulo4' },
+      { trackId: 'carouselTrack5', prevSelector: '#seccion5 .carousel-btn.prev', nextSelector: '#seccion5 .carousel-btn.next', subtituloId: 'subtitulo5' }
+    ];
+
+    secciones.forEach(sec => {
+      const trackSec = document.getElementById(sec.trackId);
+
+      libros.forEach(libro => { // usamos el mismo array de libros o uno distinto si quieres
+        const card = document.createElement('div');
+        card.classList.add('card', 'book-card');
+        card.innerHTML = `
+          <img src="${libro.img}" class="card-img-top" alt="${libro.titulo}">
+          <div class="card-body p-2">
+            <p class="card-text text-center" style="font-size: 0.7rem;">${libro.titulo}</p>
+          </div>
+        `;
+        trackSec.appendChild(card);
+      });
+
+      const prevBtnSec = document.querySelector(sec.prevSelector);
+      const nextBtnSec = document.querySelector(sec.nextSelector);
+      const cardWidthSec = trackSec.querySelector('.book-card').offsetWidth + 8;
+
+      prevBtnSec.addEventListener('click', () => trackSec.scrollBy({ left: -cardWidthSec, behavior: 'smooth' }));
+      nextBtnSec.addEventListener('click', () => trackSec.scrollBy({ left: cardWidthSec, behavior: 'smooth' }));
+
+      const subtituloSec = document.getElementById(sec.subtituloId);
+
+      const observerSec = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            subtituloSec.classList.add('visible');
+            observerSec.unobserve(subtituloSec);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      observerSec.observe(subtituloSec);
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+
+
+
+</body>
+</html>
