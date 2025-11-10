@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Archivo de configuración local - NO SUBIR
+application-local.properties
