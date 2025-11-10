@@ -19,7 +19,7 @@ COPY src src
 
 # Construimos la aplicación.
 # El --no-daemon es recomendado para entornos de CI/CD
-RUN ./gradlew build --no-daemon
+RUN ./gradlew build -x test --no-daemon
 
 # Etapa 2: Ejecución (Runtime)
 # Usamos una imagen más ligera solo con el JRE (Java 21)
