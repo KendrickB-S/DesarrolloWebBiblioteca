@@ -251,3 +251,47 @@ hr.bg-secondary {
 .footer p.copyright {
   font-size: 0.75rem; /* más pequeño */
 }
+
+
+/* Estilo para el botón de bienvenida (icono y nombre) */
+.login-btn-bienvenida {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: 0.3s;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+.login-btn-bienvenida:hover {
+  color: #09bad5;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.login-btn-bienvenida i {
+  font-size: 1.1rem;
+}
+
+
+/* Estilo para el botón de cerrar sesión (logout) */
+.logout-btn {
+  background: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 1.1rem; /* Tamaño del icono */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logout-btn:hover {
+  background-color: #ffffff;
+  color: #d9534f; /* Un color rojo para "salir" */
+  border-color: #ffffff;
+}
