@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "usuario")
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
@@ -31,4 +31,47 @@ public class Usuario {
     // Relación con sanciones
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Sancion> sanciones;
+
+
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+
 }
