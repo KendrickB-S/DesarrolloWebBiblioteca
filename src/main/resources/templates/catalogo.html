@@ -1,31 +1,17 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sitio Web</title>
-    <!-- Google Fonts: Montserrat -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Contacto - Biblioteca</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Fuentes y Bootstrap -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- CSS propio con Thymeleaf -->
     <link rel="stylesheet" th:href="@{/css/nav.css}">
     <style>
-
-        html, body {
-          min-width: 384px;
-          overflow-x: auto; /* permite desplazarse si la pantalla es más pequeña */
-        }
-
-
-        /* BODY */
-        body {
-
-          margin: 0;
-          font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-          background: #000;
-
-        }
 
         .fondo {
           background: url('/img/fondillo1.png') ;
@@ -37,98 +23,6 @@
           bottom: 0;
           border-radius: 20px;
           z-index: 0;
-        }
-
-
-        /* NAVBAR */
-        .navbar-container {
-          position: fixed;
-          top: 30px;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 2;
-          width: 90%;
-          max-width: 1200px;
-          display: flex;
-          justify-content: center;
-
-        }
-
-        .navbar {
-          background: rgba(57, 57, 57, 0.372);
-          backdrop-filter: blur(15px);
-          -webkit-backdrop-filter: blur(15px);
-          border-radius: 12px;
-          padding: 10px 30px;
-          display: flex;
-          align-items: center;
-          gap: 40px;
-          font-size: 12.5px;
-          animation: slideDown 1s ease-out forwards;
-          flex-wrap: nowrap; /* nunca baja de fila */
-          justify-content: space-between; /* logo a la izquierda, links a la derecha */
-          overflow: visible; /* sin scroll horizontal */
-          animation: slideDown 1s ease-out forwards;
-        }
-
-
-        .navbar img { height: 40px; border-radius:30px ;}
-
-        .navbar a, .login-btn {
-          color: #fff;
-          text-decoration: none;
-          font-weight: 500;
-          white-space: nowrap;
-          transition: 0.3s;
-        }
-
-        .navbar a:hover { color: #09bad5; transform: scale(1.1); }
-
-        .login-btn {
-          background-color: #ffffff !important;
-          color: #09bad5 !important;
-          padding: 10px 15px;
-          border-radius: 8px;
-          text-decoration: none;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          transition: 0.3s;
-        }
-
-        .login-btn:hover {
-          background-color: #09bad5 !important;
-          color: #ffffff !important;
-          transform: scale(1.01);
-        }
-
-
-          /*Iconos de busqueda y libro*/
-        .iconos-flotantes {
-          position: fixed;
-          top: 38px;
-          right: 100px;
-          display: flex;
-          gap: 15px;
-          z-index: 20;
-        }
-
-        .search-icon-container, .prestamos-icon-container {
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          cursor: pointer;
-          transition: 0.3s;
-        }
-
-        .search-icon-container i, .prestamos-icon-container i {
-          font-size: 1.1rem;
-          color: #fff;
-          transition: 0.3s;
         }
 
 
@@ -207,12 +101,6 @@
               background-color: #fff;
               color: #09bad5;
             }
-
-
-
-
-
-
     </style>
 </head>
 <body>
@@ -226,16 +114,30 @@
             <a th:href="@{/catalogo}">Catálogo</a>
             <a th:href="@{/prestamos}">Préstamos</a>
             <a th:href="@{/contactos}">Contacto</a>
-            <a th:href="@{/iniciologin}" class="login-btn">
-                Iniciar Sesión <i class="bi bi-person-fill"></i>
-            </a>
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/iniciologin}" class="login-btn">
+                    Iniciar Sesión <i class="bi bi-person-fill"></i>
+                </a>
+            </div>
+
+            <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-3">
+                <a href="#" class="login-btn-bienvenida">
+                    <i class="bi bi-person-circle"></i>
+                    <span sec:authentication="name"></span> </a>
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
         </nav>
     </div>
 
     <!-- Iconos flotantes -->
     <div class="iconos-flotantes">
-        <div><i class="bi bi-search"></i></div>
-        <div><i class="bi bi-book-half"></i></div>
+        <div class="search-icon-container"><i class="bi bi-search"></i></div>
+        <div class="prestamos-icon-container"><i class="bi bi-book-half"></i></div>
     </div>
 
     <br><br><br>
@@ -248,99 +150,19 @@
 
     <div class="libros-container">
 
-        <!-- Render dinámico de libros con Thymeleaf -->
-        <div class="libro-card">
+        <div class="libro-card" th:each="libro : ${libros}">
 
-            <img src="../static/img/libro1.jpg" th:src="@{/img/libro1.jpg}" alt="Libro 1">
-            <div class="libro-info">
-                <h5>Orgullo y prejuicio</h5>
-                <p>Jane Austen</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
+            <img th:src="@{/img/{url}(url=${libro.portadaUrl})}" alt="Portada de libro"
+                 src="../static/img/libro1.jpg">
 
-        <div class="libro-card">
-            <img th:src="@{/img/libro2.jpg}" alt="Libro 2">
             <div class="libro-info">
-                <h5>El Principito</h5>
-                <p>Antoine de Saint-Exupéry</p>
+                <h5 th:text="${libro.titulo}">Título del Libro</h5>
+                <p th:text="${libro.autor}">Autor del Libro</p>
                 <button class="btn-ver">Ver más</button>
             </div>
         </div>
 
-        <div class="libro-card">
-            <img th:src="@{/img/libro3.jpg}" alt="Libro 3">
-            <div class="libro-info">
-                <h5>La llamada de lo salvaje</h5>
-                <p>Jack London</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
-
-        <div class="libro-card">
-            <img th:src="@{/img/libro4.jpg}" alt="Libro 4">
-            <div class="libro-info">
-                <h5>La sombra del viento</h5>
-                <p>Carlos Ruiz Zafón</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
-
-        <div class="libro-card">
-            <img th:src="@{/img/libro5.jpg}" alt="Libro 5">
-            <div class="libro-info">
-                <h5>La delicadeza</h5>
-                <p>David Foenkinos</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
-
-        <div class="libro-card">
-            <img th:src="@{/img/libro6.jpg}" alt="Libro 6">
-            <div class="libro-info">
-                <h5>1984</h5>
-                <p>George Orwell</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
-
-        <div class="libro-card">
-            <img th:src="@{/img/libro7.jpg}" alt="Libro 7">
-            <div class="libro-info">
-                <h5>La casa de los espíritus</h5>
-                <p>Isabel Allende</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
-        <div class="libro-card">
-            <img th:src="@{/img/libro8.jpg}" alt="Libro 8">
-            <div class="libro-info">
-                <h5>El baile</h5>
-                <p>Irène Némirovsky</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
-
-        <div class="libro-card">
-            <img th:src="@{/img/libro9.jpg}" alt="Libro 9">
-            <div class="libro-info">
-                <h5>La casa de la alegría</h5>
-                <p>Edith Wharton</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
-
-        <div class="libro-card">
-            <img th:src="@{/img/libro10.jpg}" alt="Libro 10">
-            <div class="libro-info">
-                <h5>Veinte poemas de amor y una canción desesperada</h5>
-                <p>Pablo Neruda</p>
-                <button class="btn-ver">Ver más</button>
-            </div>
-        </div>
     </div>
-
-
 
 </body>
 </html>
