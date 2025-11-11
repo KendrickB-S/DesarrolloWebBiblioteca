@@ -15,5 +15,13 @@ public class Rol {
     private Integer idRol;
 
     @Column(nullable = false, length = 50)
-    private String nombre;
+    private String nombreRol;
+
+    public String getNombreRol() {
+        return nombreRol;
+    }
+
+    public void setNombreRol(String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
 }
