@@ -22,4 +22,8 @@ public class Libro {
 
     @Column(name = "cantidad_disponible", nullable = false)
     private Integer cantidadDisponible = 0;
+
+    // Guardará el nombre del archivo de imagen
+    @Column(name = "portada_url", length = 255)
+    private String portadaUrl;
 }
