@@ -52,9 +52,71 @@
           .auth-card { width: 90%; max-width: 400px; border-radius: 0; background: transparent; padding: 0; display: flex; justify-content: center; align-items: center; }
           .auth-card-inner { width: 100%; padding: 2rem; background: transparent; border-radius: 0; }
         }
+
+
+        /* INICIO: Estilos para Alertas (Toasts) */
+        .toast-container {
+            z-index: 1100; /* Asegura que esté sobre todo */
+        }
+        .toast {
+            background-color: #2a2a2a; /* Fondo oscuro para el toast */
+            color: #ffffff;
+            border: 1px solid #444;
+        }
+        .toast-header.bg-danger {
+            background-color: #d9534f !important; /* Rojo */
+        }
+        .toast-header.bg-success {
+            background-color: #5cb85c !important; /* Verde */
+        }
+        .toast-header {
+            border-bottom: 1px solid #444;
+        }
+        /* FIN: Estilos para Alertas (Toasts) */
     </style>
 </head>
 <body>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+
+    <div th:if="${param.error}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-header bg-danger text-white">
+            <strong class="me-auto">Error de Acceso</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Email o contraseña incorrectos.
+        </div>
+    </div>
+
+    <div th:if="${param.logout}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Éxito</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Has cerrado sesión exitosamente.
+        </div>
+    </div>
+
+    <div th:if="${error}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-header bg-danger text-white">
+            <strong class="me-auto">Error de Registro</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" th:text="${error}">
+        </div>
+    </div>
+
+    <div th:if="${exito}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Éxito</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" th:text="${exito}">
+        </div>
+    </div>
+
+</div>
 
 <div class="auth-container">
     <div class="auth-image"></div>
@@ -66,7 +128,9 @@
                 <img th:src="@{/img/logolibro.png}" alt="Logo Biblioteca" class="logo">
                 <h3>Iniciar Sesión</h3>
                 <form class="d-flex flex-column w-100" th:action="@{/login}" method="post">
-                    <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required>
+                    <input type="email" name="email" class="form-control" placeholder="Correo electrónico (@gmail.com)" required
+                           pattern=".+@gmail\.com"
+                           title="Solo se permiten correos @gmail.com">
                     <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
                     <button type="submit" class="btn btn-primary mt-2">Ingresar</button>
                 </form>
@@ -81,7 +145,9 @@
                 <h3>Crear Cuenta</h3>
                 <form class="d-flex flex-column w-100" th:action="@{/register}" method="post">
                     <input type="text" name="name" class="form-control" placeholder="Nombre" required>
-                    <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required>
+                    <input type="email" name="email" class="form-control" placeholder="Correo electrónico (@gmail.com)" required
+                           pattern=".+@gmail\.com"
+                           title="Solo se permiten correos @gmail.com">
                     <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
                     <input type="password" name="confirmPassword" class="form-control" placeholder="Confirmar contraseña" required>
                     <button type="submit" class="btn btn-primary mt-2">Registrarme</button>
@@ -94,7 +160,7 @@
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function toggleForms() {
       const login = document.getElementById("loginForm");
@@ -120,6 +186,17 @@
         document.querySelectorAll('.form-visible .btn-primary, .form-visible .switch-link')
           .forEach(el => el.classList.add('animate'));
       }, 1400);
+
+      // --- INICIO: CÓDIGO NUEVO PARA ACTIVAR TOASTS ---
+      const toastContainer = document.querySelector('.toast-container');
+      if (toastContainer) {
+          const toastElements = toastContainer.querySelectorAll('.toast');
+          toastElements.forEach(toastEl => {
+              const toast = new bootstrap.Toast(toastEl);
+              toast.show();
+          });
+      }
+      // --- FIN: CÓDIGO NUEVO PARA ACTIVAR TOASTS ---
     });
 
     const authImage = document.querySelector('.auth-image');
