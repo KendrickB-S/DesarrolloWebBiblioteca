@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,17 @@
     <link rel="stylesheet" th:href="@{/css/nav.css}">
     <style>
 
+        .fondo {
+          background: url('/img/fondillo1.png') ;
+          opacity: 0.25;
+          position: fixed;
+          top: 3%;
+          left: 2%;
+          right: 1%;
+          bottom: 0;
+          border-radius: 20px;
+          z-index: 0;
+        }
         /* CONTENEDOR */
         .container-contacto {
           position: relative;
@@ -36,7 +47,7 @@
         }
 
         .form-control, .form-select {
-          background-color: rgba(255,255,255,0.05);
+          background-color: #6c757d;
           border: 1px solid rgba(255,255,255,0.15);
           color: #fff;
         }
@@ -44,7 +55,7 @@
         .form-control:focus, .form-select:focus {
           border-color: #09bad5;
           box-shadow: 0 0 5px rgba(9,186,213,0.5);
-          background-color: rgba(255,255,255,0.08);
+          background-color: #495057;
           color: #fff;
         }
 
@@ -85,7 +96,7 @@
     </style>
 </head>
 <body>
-
+<div class="fondo"></div>
 <!-- Navbar -->
 <div class="navbar-container">
     <nav class="navbar">
@@ -94,9 +105,23 @@
         <a th:href="@{/catalogo}">Catálogo</a>
         <a th:href="@{/prestamos}">Préstamos</a>
         <a th:href="@{/contactos}">Contacto</a>
-        <a th:href="@{/iniciologin}" class="login-btn">
-            Iniciar Sesión <i class="bi bi-person-fill"></i>
-        </a>
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/iniciologin}" class="login-btn">
+                Iniciar Sesión <i class="bi bi-person-fill"></i>
+            </a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-3">
+            <a href="#" class="login-btn-bienvenida">
+                <i class="bi bi-person-circle"></i>
+                <span sec:authentication="name"></span> </a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-btn">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </form>
+        </div>
     </nav>
 </div>
 
