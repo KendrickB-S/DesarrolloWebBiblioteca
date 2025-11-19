@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Configuración básica del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador - Gestión de Préstamos</title>
+
+    <!-- Enlace al CSS de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Hoja de estilos personalizada -->
+    <link rel="stylesheet" href="/css/admin-style.css">
+
+    <!-- Fuente Montserrat de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<!-- Contenedor principal que incluye sidebar y contenido -->
+<div class="d-flex" id="wrapper">
+
+    <!-- ========================= SIDEBAR ========================= -->
+    <!-- Barra lateral con enlaces de navegación del panel de administrador -->
+    <div class="sidebar d-flex flex-column p-3" style="width: 250px;">
+        <h4 class="text-center mb-4 mt-2">
+            <!-- Ícono de engranaje + título -->
+            <i class="bi bi-gear-fill me-2" style="color: #0ea1b8;"></i> Admin Panel
+        </h4>
+        <hr class="text-secondary">
+
+        <!-- Navegación lateral -->
+        <nav class="nav flex-column">
+            <!-- Enlace a Gestión de Usuarios -->
+            <a class="nav-link" th:href="@{/gestionusuario}">
+                <i class="bi bi-person-lines-fill me-2"></i> Gestión de Usuarios
+            </a>
+            <!-- Enlace a Gestión de Libros -->
+            <a class="nav-link" th:href="@{/gestionlibros}">
+                <i class="bi bi-book-fill me-2"></i> Gestión de Libros
+            </a>
+            <!-- Enlace activo a Gestión de Préstamos -->
+            <a class="nav-link active" th:href="@{/gestionprestamos}">
+                <i class="bi bi-journal-check me-2"></i> Gestión de Préstamos
+            </a>
+        </nav>
+    </div>
+    <!-- ======================= FIN SIDEBAR ======================= -->
+
+    <!-- ================== CONTENIDO PRINCIPAL ================== -->
+    <div id="page-content-wrapper" class="flex-grow-1">
+
+        <!-- ================= NAVBAR SUPERIOR ================= -->
+        <!-- Barra superior con el título del sistema y opciones del usuario -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <span class="navbar-brand h1 mb-0">Book Store - Administración</span>
+                <div class="ms-auto">
+                    <!-- Saludo al administrador -->
+                    <span class="me-3">Hola, Administrador!</span>
+                    <!-- Botón de cierre de sesión -->
+                    <a href="#" class="btn btn-sm btn-outline-secondary">Cerrar Sesión</a>
+                </div>
+            </div>
+        </nav>
+        <!-- =============== FIN NAVBAR SUPERIOR =============== -->
+
+        <!-- =============== CONTENIDO DE LA PÁGINA =============== -->
+        <div class="container-fluid main-content">
+
+            <!-- Encabezado principal -->
+            <h1 class="mt-4 mb-4">Gestión de Préstamos y Devoluciones</h1>
+            <p class="text-secondary">Registro, seguimiento y control de las fechas de devolución y penalidades.</p>
+
+            <!-- Botón que abre el modal para registrar un nuevo préstamo -->
+            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#prestamoModal">
+                <i class="bi bi-plus-circle me-2"></i> Registrar Nuevo Préstamo
+            </button>
+
+            <!-- ================== TABLA DE PRÉSTAMOS ================== -->
+            <div class="table-responsive shadow-sm rounded">
+                <table class="table table-striped table-hover rounded">
+                    <!-- Encabezado de la tabla -->
+                    <thead class="table-custom-header">
+                    <tr>
+                        <th>ID Préstamo</th>
+                        <th>Usuario</th>
+                        <th>Libro Prestado</th>
+                        <th>F. Préstamo</th>
+                        <th>F. Límite Devolución</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+
+                    <!-- Cuerpo de la tabla con ejemplos de registros -->
+                    <tbody>
+                    <!-- Primer registro -->
+                    <tr>
+                        <td>001</td>
+                        <td>Andreik Bernaola</td>
+                        <td>El Conde de Montecristo</td>
+                        <td>08-10-2025</td>
+                        <td class="text-warning">23-10-2025 (Cerca)</td>
+                        <td><span class="badge bg-primary">En Curso</span></td>
+                        <td>
+                            <!-- Botón para registrar devolución -->
+                            <button class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#devolucionModal">
+                                <i class="bi bi-check-lg"></i> Devolver
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Segundo registro -->
+                    <tr>
+                        <td>002</td>
+                        <td>Juliano Manrique</td>
+                        <td>Ilíada</td>
+                        <td>20-09-2025</td>
+                        <td class="text-danger">05-10-2025 (ATRASADO)</td>
+                        <td><span class="badge bg-danger">Vencido</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#devolucionModal">
+                                <i class="bi bi-check-lg"></i> Devolver
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Tercer registro -->
+                    <tr>
+                        <td>003</td>
+                        <td>Belen Diaz</td>
+                        <td>Oteló</td>
+                        <td>15-10-2025</td>
+                        <td class="text-success">29-10-2025</td>
+                        <td><span class="badge bg-primary">En Curso</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#devolucionModal">
+                                <i class="bi bi-check-lg"></i> Devolver
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- =============== FIN TABLA DE PRÉSTAMOS =============== -->
+
+        </div>
+        <!-- =============== FIN CONTENIDO DE LA PÁGINA =============== -->
+    </div>
+    <!-- =============== FIN PAGE CONTENT WRAPPER =============== -->
+</div>
+<!-- =============== FIN DEL WRAPPER GENERAL =============== -->
+
+<!-- =================== MODAL: REGISTRAR NUEVO PRÉSTAMO =================== -->
+<div class="modal fade" id="prestamoModal" tabindex="-1" aria-labelledby="prestamoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Encabezado del modal -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="prestamoModalLabel">Registrar Nuevo Préstamo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Cuerpo del modal con el formulario -->
+            <div class="modal-body">
+                <form>
+                    <p class="text-secondary">Utiliza el correo o nombre del usuario, y el título o ID del libro.</p>
+
+                    <div class="mb-3">
+                        <label for="usuario_p" class="form-label">Usuario Lector</label>
+                        <input type="text" class="form-control" id="usuario_p" placeholder="Ej: willian@utp.edu.pe" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="libro_p" class="form-label">Libro(s) a Prestar</label>
+                        <input type="text" class="form-control" id="libro_p" placeholder="Ej: El Conde de Montecristo" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fecha_dev" class="form-label">Fecha Límite de Devolución</label>
+                        <input type="date" class="form-control" id="fecha_dev" required>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Pie del modal -->
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Confirmar Préstamo</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =================== FIN MODAL DE PRÉSTAMO =================== -->
+
+<!-- =================== MODAL: REGISTRO DE DEVOLUCIÓN =================== -->
+<div class="modal fade" id="devolucionModal" tabindex="-1" aria-labelledby="devolucionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Encabezado del modal -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="devolucionModalLabel">Registro de Devolución</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Cuerpo del modal con detalles del préstamo -->
+            <div class="modal-body">
+                <h6 class="text-primary">Detalles del Préstamo (ID: 002)</h6>
+                <ul class="list-unstyled">
+                    <li><strong>Usuario:</strong> Juliano Manrique</li>
+                    <li><strong>Libro:</strong> Ilíada</li>
+                    <li><strong>F. Límite:</strong> 05-10-2025</li>
+                    <li><strong>F. Devolución Real:</strong> <span class="text-danger">15-10-2025</span></li>
+                </ul>
+
+                <hr>
+
+                <!-- Alerta de penalidad por atraso -->
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> **¡ATRASO DETECTADO!** <br>
+                    Días de retraso: 10. <br>
+                    Penalidad Calculada: S/ 20.00 (El cobro es presencial [cite: 77]).
+                </div>
+
+                <p>Confirme que el libro fue devuelto en buen estado y el estado de la penalidad.</p>
+            </div>
+
+            <!-- Pie del modal -->
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Completar Devolución</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =================== FIN MODAL DE DEVOLUCIÓN =================== -->
+
+<!-- Script de Bootstrap (para funcionamiento de modales y componentes interactivos) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

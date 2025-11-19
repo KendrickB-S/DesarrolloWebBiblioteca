@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Configuración básica del documento HTML -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador - Gestión de Usuarios</title>
+
+    <!-- Enlace al CSS de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Iconos de Bootstrap (para los íconos en botones y navegación) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+
+    <!-- Fuente Montserrat desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<!-- Contenedor principal que envuelve toda la interfaz (sidebar + contenido principal) -->
+<div class="d-flex" id="wrapper">
+
+    <!-- ========================= SIDEBAR ========================= -->
+    <!-- Barra lateral de navegación del administrador -->
+    <div class="sidebar d-flex flex-column p-3" style="width: 250px;">
+        <h4 class="text-center mb-4 mt-2">
+            <!-- Ícono de engranaje + título del panel -->
+            <i class="bi bi-gear-fill me-2" style="color: #0ea1b8;"></i> Admin Panel
+        </h4>
+        <hr class="text-secondary">
+
+        <!-- Navegación lateral con enlaces a distintas gestiones -->
+        <nav class="nav flex-column">
+            <!-- Enlace activo: Gestión de Usuarios -->
+            <a class="nav-link active" th:href="@{/gestionusuario}">
+                <i class="bi bi-person-lines-fill me-2"></i> Gestión de Usuarios
+            </a>
+            <!-- Enlace: Gestión de Libros -->
+            <a class="nav-link" th:href="@{/gestionlibros}">
+                <i class="bi bi-book-fill me-2"></i> Gestión de Libros
+            </a>
+            <!-- Enlace: Gestión de Préstamos -->
+            <a class="nav-link" th:href="@{/gestionprestamos}">
+                <i class="bi bi-journal-check me-2"></i> Gestión de Préstamos
+            </a>
+        </nav>
+    </div>
+    <!-- ======================= FIN SIDEBAR ======================= -->
+
+    <!-- ================== CONTENIDO PRINCIPAL ================== -->
+    <div id="page-content-wrapper" class="flex-grow-1">
+
+        <!-- ======================= NAVBAR SUPERIOR ======================= -->
+        <!-- Barra superior con nombre del sistema y botón de cerrar sesión -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <span class="navbar-brand h1 mb-0">Book Store - Administración</span>
+                <div class="ms-auto">
+                    <!-- Saludo al administrador -->
+                    <span class="me-3">Hola, Administrador!</span>
+                    <!-- Botón para cerrar sesión -->
+                    <a href="#" class="btn btn-sm btn-outline-secondary">Cerrar Sesión</a>
+                </div>
+            </div>
+        </nav>
+        <!-- ==================== FIN NAVBAR SUPERIOR ==================== -->
+
+        <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+        <div class="container-fluid main-content">
+
+            <!-- Título principal de la sección -->
+            <h1 class="mt-4 mb-4">Gestión de Usuarios Lectores</h1>
+            <p class="text-secondary">Administra los usuarios lectores de la Biblioteca.</p>
+
+            <!-- Botón que abre el modal para registrar nuevo usuario -->
+            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#usuarioModal">
+                <i class="bi bi-plus-circle me-2"></i> Registrar Nuevo Usuario
+            </button>
+
+            <!-- ==================== TABLA DE USUARIOS ==================== -->
+            <div class="table-responsive shadow-sm rounded">
+                <table class="table table-striped table-hover rounded">
+                    <!-- Encabezado de la tabla -->
+                    <thead class="table-custom-header">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo Electrónico</th>
+                        <th>Rol</th>
+                        <th>Fecha Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <!-- Cuerpo de la tabla con ejemplos de usuarios -->
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Belen Diaz</td>
+                        <td>belen@utp.edu.pe</td>
+                        <td>Lector</td>
+                        <td>10-10-2025</td>
+                        <td>
+                            <!-- Botón para editar usuario (abre el modal) -->
+                            <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#usuarioModal">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </button>
+                            <!-- Botón para eliminar usuario con confirmación -->
+                            <a href="#" class="btn btn-sm btn-danger" onclick="return confirm('¿Confirma la eliminación?');">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Willian Quispe</td>
+                        <td>willian@utp.edu.pe</td>
+                        <td>Lector</td>
+                        <td>12-10-2025</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#usuarioModal">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </button>
+                            <a href="#" class="btn btn-sm btn-danger" onclick="return confirm('¿Confirma la eliminación?');">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- ================= FIN TABLA DE USUARIOS ================= -->
+        </div>
+        <!-- ================= FIN CONTENIDO PRINCIPAL ================= -->
+    </div>
+    <!-- ================= FIN PAGE CONTENT WRAPPER ================= -->
+</div>
+<!-- ================= FIN DEL WRAPPER GENERAL ================= -->
+
+<!-- ======================= MODAL DE REGISTRO/EDICIÓN ======================= -->
+<div class="modal fade" id="usuarioModal" tabindex="-1" aria-labelledby="usuarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Encabezado del modal -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="usuarioModalLabel">Registrar/Editar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Cuerpo del modal: formulario de registro/edición -->
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rol" class="form-label">Rol</label>
+                        <select class="form-select form-control" id="rol" required>
+                            <option value="1">Lector</option>
+                            <option value="2">Administrador</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Pie del modal con botones -->
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ==================== FIN DEL MODAL ==================== -->
+
+<!-- Script de Bootstrap (para modales, menús, etc.) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
