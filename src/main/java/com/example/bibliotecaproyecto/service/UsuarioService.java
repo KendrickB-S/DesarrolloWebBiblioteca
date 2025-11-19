@@ -23,17 +23,16 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder; // Inyectamos el encriptador
 
     public Usuario registrarUsuario(String nombre, String email, String contrasena) {
-        // 1. Verificar si el email ya existe
+        // Verificar si el email ya existe
         if (usuarioRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("El email ya está registrado");
         }
 
-        // 2. Buscar el rol por defecto (Ej: "USER"). ¡Asegúrate de tener este rol en tu BD!
-        // Por simplicidad, asumiremos que el rol con ID 2 es "USER" o "CLIENTE"
-        // En un proyecto real, esto se maneja mejor.
+        // Buscar el rol por defecto (Ej: "USER").
+
         Rol rolUsuario = rolRepository.findById(2).orElseThrow(() -> new RuntimeException("No se encontró el rol de usuario"));
 
-        // 3. Crear el nuevo usuario
+        // Crear el nuevo usuario
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(nombre);
         nuevoUsuario.setEmail(email);
@@ -41,7 +40,7 @@ public class UsuarioService {
         nuevoUsuario.setContraseña(passwordEncoder.encode(contrasena));
         nuevoUsuario.setRol(rolUsuario);
 
-        // 5. Guardar en la BD
+        // Guardar en la BD
         return usuarioRepository.save(nuevoUsuario);
     }
 }
