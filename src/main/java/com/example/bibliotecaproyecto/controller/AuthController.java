@@ -42,14 +42,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        // 1. Buscar usuario por email
+        // Buscar usuario por email
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(request.email);
 
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            // 2. Verificar la contraseña
+            // Verificar la contraseña
             if (passwordEncoder.matches(request.password, usuario.getContraseña())) {
-                // 3. ¡Login Exitoso! Devolvemos el usuario (SIN la contraseña por seguridad)
+                // Devolvemos el usuario (SIN la contraseña por seguridad)
                 usuario.setContraseña(null);
                 return ResponseEntity.ok(usuario);
             }
