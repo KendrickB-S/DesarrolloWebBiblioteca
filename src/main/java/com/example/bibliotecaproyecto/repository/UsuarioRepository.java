@@ -11,3 +11,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     // Spring Data JPA crea la consulta automáticamente
     Optional<Usuario> findByEmail(String email);
 }
+
