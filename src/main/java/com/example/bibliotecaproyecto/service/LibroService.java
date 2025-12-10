@@ -22,4 +22,12 @@ public class LibroService {
         return libroRepository.findById(id);
     }
 
+    public Libro guardarLibro(Libro libro) {
+        return libroRepository.save(libro);
+    }
+
+    public void eliminarLibro(Integer id) {
+        libroRepository.deleteById(id);
+    }
+
 }
