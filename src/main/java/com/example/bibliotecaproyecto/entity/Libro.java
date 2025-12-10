@@ -20,6 +20,9 @@ public class Libro {
     @Column(nullable = false, length = 150)
     private String autor;
 
+    @Column(nullable = false, length = 255)
+    private String categoria;
+
     @Column(name = "cantidad_disponible", nullable = false)
     private Integer cantidadDisponible = 0;
 
